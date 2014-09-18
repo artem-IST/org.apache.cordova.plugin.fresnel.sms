@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    id="org.apache.cordova.plugin.fresnel.service.sms" version="0.0.1">
+
+
+    <name>Fresnel SMS Plugin</name>
+
+    <description>Provides an interface for Fresnel to send and receive SMS messages.
+    	This will eventually be used to transfer information via the GSN network, through SMS,
+    	when data is not available in the app.
+    </description>
+
+    <author>Artem Klintsevich</author>
+
+    <keywords>SMS,sms,send message,Fresnel</keywords>
+
+    <license></license>
+
+    <engines>
+        <engine name="cordova" version="3.5.0"/>
+    </engines>
+
+    <js-module src="www/js/FresnelSmsService.js" name="FresnelSMS">
+        <clobbers target="FresnelSMS"/>
+    </js-module>
+
+    <platform name="android">
+    	<source-file src="src/android/FresnelSmsService.java"   target-dir="src/org/apache/cordova/plugin/fresnel/service/sms"/>
+        <source-file src="src/android/FresnelSMS.java"          target-dir="src/org/apache/cordova/plugin/fresnel/service/sms"/>
+        <source-file src="src/android/FresnelSmsReceiver.java"  target-dir="src/org/apache/cordova/plugin/fresnel/service/sms"/>
+        <source-file src="src/android/FresnelSmsBuilder.java"   target-dir="src/org/apache/cordova/plugin/fresnel/service/sms"/>
+
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="FresnelSmsService">
+                <param name="android-package" value="org.apache.cordova.plugin.fresnel.service.sms.FresnelSmsService"/>
+            </feature>
+        </config-file>
+        
+        <config-file target="AndroidManifest.xml" parent="/*">
+            <uses-permission android:name="android.permission.SEND_SMS" />
+            <uses-permission android:name="android.permission.RECEIVE_SMS"/>
+            <uses-permission android:name="android.permission.READ_SMS"/>
+        </config-file>
+
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+             <receiver android:name="org.apache.cordova.plugin.fresnel.service.sms.FresnelSmsReceiver">
+                <intent-filter android:priority="999">
+                    <action android:name="android.provider.Telephony.SMS_RECEIVED"/>
+                </intent-filter>
+            </receiver>
+        </config-file>
+
+    </platform>
+</plugin>
