@@ -18,6 +18,13 @@ public class FresnelSmsService extends CordovaPlugin {
 	public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
 
 		Log.i(LOG,"Action:"+action);
+		/**
+		 * action = send
+		 * Method to call = send()
+		 * args[0] = phone number you wish to call
+		 * args[1] = message contents to convert
+		 * args[2] = message type 'personAdd' || 'personEdit'
+		 */
 		if (action.equals("send")) {
 			try {
 				send(args);
@@ -32,14 +39,17 @@ public class FresnelSmsService extends CordovaPlugin {
 		
 	
 		/**
-		 * action = getMessages()
-		 * args[0] = type    --> type of message you wish to get
-		 * 		'PersonAdd'  --> wish to get Add messages
-		 * 		'PersonEdit' --> wish to get Edit messages
+		 * action = getMessages
+		 * Method to call = getMessages()
+		 * args[0] = type    	 --> type of message you wish to get
+		 * 		Possible Values:
+		 * 			'PersonAdd'  --> wish to get Add messages
+		 * 			'PersonEdit' --> wish to get Edit messages
 		 *						
-		 * args[1] = options --> options that you wish to implement
-		 *		'Clear' 	 --> clears the messages that were already received
- 		 *		'NoClear'	 --> does not clear the messages that were already received
+		 * args[1] = options 	 --> options that you wish to implement
+		 *		Possible Values:
+		 *			'Clear' 	 --> clears the messages that were already received
+ 		 *			'NoClear'	 --> does not clear the messages that were already received
 		 */	
 		if(action.equals("getMessages")) {
 			
@@ -75,18 +85,32 @@ public class FresnelSmsService extends CordovaPlugin {
 			
 		}
 
+		/**
+		 * action = "hideNotifications"
+		 * args[0] = bool 		--> String value representing a boolean
+		 *	   Possible Values:
+		 *			'true'  	--> Hide messages
+		 *			'false' 	--> Do not hide messages
+		*/
+		if(action.equals("hideNotifications")){
+
+			boolean hideStatus = new Boolean(args.getString(0));
+			Log.i(LOG,"hideNotifcations() called\nArg[0]: "+args.getString(0)+"\nhideStatus: "+hideStatus);
+			FresnelSmsReceiver.setNotifications(hideStatus);
+			return true;
+		}
+
 		return false;
 
 	}
 
+	/**
+	 * @description - this is a helper method that is used to send out a FresnelSMS
+	 * @param args - arguments that were passed from the Cordova 'execute' function
+	 * @throws JSONException
+	 */
 	private void send(JSONArray args) throws JSONException {
-		/**
-		 * action = send()
-		 * args[0] = phone number you wish to call
-		 * args[1] = message contents to convert
-		 * args[2] = message type 'personAdd' || 'personEdit'
-		 */
-
+	
 		Log.i(LOG,"send() called...");
 		
 		SmsManager sms = SmsManager.getDefault();
@@ -105,7 +129,16 @@ public class FresnelSmsService extends CordovaPlugin {
 
 	}
 	
-	
+
+	/**
+	 * @description - this is a helper method that is used to retrieve FresnelSMS messages that might
+	 * be sitting in the FresnelSmsReceivers queue.  
+	 * @param c - The type of message that you wish to retrieve
+	 * 		values:
+	 * 			'a' = AddPerson messages
+	 * 			'e' = EditPerson messages
+	 * @return String
+	 */
 	private String getMessages(char c) {
 		Log.i(LOG,"getMessages() called...");
 		if(c!=0) return FresnelSmsReceiver.getMessages(c);

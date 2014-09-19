@@ -17,6 +17,7 @@ public class FresnelSmsReceiver extends BroadcastReceiver {
 	//ArrayList that hold the different message types
 	private static ArrayList<String> fresnelAddPersonMessages = new ArrayList<String>();
 	private static ArrayList<String> fresnelEditPersonMessages = new ArrayList<String>();
+	private static boolean hideNotifications = false;
 	
 	//Queue used to hold messages that are in progress
 	private static Hashtable<String, FresnelSMS> fresnelSmsQueue = new Hashtable<String,FresnelSMS>();
@@ -49,6 +50,10 @@ public class FresnelSmsReceiver extends BroadcastReceiver {
 			Log.d(LOG,"DELIMITER: "+delimiter);
 			if(delimiter.equals(FresnelSmsBuilder.str_delimiter)) {
 				Log.i(LOG,"FrenselSMS found!");
+				Log.i(LOG,"Checking Notification status\nStatus:"+hideNotifications);
+
+				if(hideNotifications == true)abortBroadcast();
+
 				FresnelSMS inQuestion;
 				/**
 				 * If we have a message delimiter that matches a FresnelSMS, we have a messageComponent
@@ -115,7 +120,7 @@ public class FresnelSmsReceiver extends BroadcastReceiver {
 	 * @description Returns a string representation of all of the FresnelSMS messages
 	 *              this class has received...
 	 * @return String
-	 */
+	*/
 	public static String getMessages(char c) {
 		
 		String str = "";
@@ -153,6 +158,17 @@ public class FresnelSmsReceiver extends BroadcastReceiver {
 
 		}
 
+	}
+
+	/**
+	 * @description - This is a public method that can change the notification 
+	 * status of the receiver class. If you do not want the receiver to display 
+	 * FresnelSMS notifications to the user, simply use this class to do such.
+	 * @param bool
+	*/
+	public static void setNotifications(boolean bool){
+		if(bool == true) hideNotifications = true;
+		if(bool == false) hideNotifications = false; 
 	}
 	
 
