@@ -8,7 +8,6 @@
 
 #import "FresnelSmsService.h"
 #import "FresnelSmsBuilder.h"
-#import "FresnelSmsViewController.h"
 
 @interface FresnelSmsService()
 
