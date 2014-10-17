@@ -11,8 +11,8 @@ In order to get the plugin to work for iOS, please follow these steps
 2.)Click on your project target file, it should be on the left hand side, the first thing in the list.
 
 3.)Scroll down to 'Linked Frameworks and Libraries'
-    3.b) click the '+' button to add a new library
-    3.c) in the search box, type 'MessageUI.framework' and add that library
+  - click the '+' button to add a new library
+  - in the search box, type 'MessageUI.framework' and add that library
     
 4.)You are now all set up to go. Enjoy
   
