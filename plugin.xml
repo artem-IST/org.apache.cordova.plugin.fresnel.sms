@@ -18,7 +18,7 @@
     <license></license>
 
     <engines>
-        <engine name="cordova" version="3.5.0"/>
+        <engine name="cordova" version=">=3.5.0"/>
     </engines>
 
     <js-module src="www/js/FresnelSmsService.js" name="FresnelSMS">
@@ -52,4 +52,19 @@
         </config-file>
 
     </platform>
+    
+    <platform name="ios">
+        <header-file src="src/ios/FresnelSmsBuilder.h"/>
+        <source-file src="src/ios/FresnelSmsBuilder.m"/>
+        
+        <header-file src="src/ios/FresnelSmsService.h"/>
+        <source-file src="src/ios/FresnelSmsService.m"/>
+ 
+        <config-file target="config.xml" parent="/*">
+            <feature name="FresnelSmsService">
+                <param name="ios-package" value="FresnelSmsService"/>
+            </feature>
+        </config-file>
+    </platform>
+    
 </plugin>
